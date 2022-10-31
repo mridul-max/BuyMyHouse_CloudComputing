@@ -23,7 +23,6 @@ namespace BuyMyHouse.DataAccess
                 .HasPartitionKey(m => m.ZipCode).HasKey(m => m.Id);
             modelBuilder.Entity<Mortgage>().ToContainer("Houses").HasNoDiscriminator()
                 .HasPartitionKey(h => h.ZipCode).HasKey(h => h.Id);
-
         }
         public Task<int> SaveChangesAsync() => base.SaveChangesAsync();
     }

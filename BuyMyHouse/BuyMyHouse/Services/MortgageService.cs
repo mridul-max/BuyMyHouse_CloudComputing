@@ -14,7 +14,6 @@ namespace BuyMyHouse.Services
         private readonly IBlob _Blob;
         private readonly string _ServiceBusConnectString;
         private readonly string _CreateQueueName;
-        private readonly string _DeleteQueueName;
         private readonly string _SendQueueName;
 
         public MortgageService(IUserService userService, IBlob blob)
@@ -23,7 +22,6 @@ namespace BuyMyHouse.Services
             _Blob = blob;
             _ServiceBusConnectString = Environment.GetEnvironmentVariable("AzureConnectionString");
             _CreateQueueName = Environment.GetEnvironmentVariable("ServiceBusNameCreate");
-            _DeleteQueueName = Environment.GetEnvironmentVariable("ServiceBusNameDelete");
             _SendQueueName = Environment.GetEnvironmentVariable("ServiceBusNameSend");
         }
 
@@ -41,7 +39,7 @@ namespace BuyMyHouse.Services
                     ZipCode = user.ZipCode
                 };
                 var pdf = PDFMaker.CreatePDF(mortgage);
-                user.PDF = await _Blob.CreateFile(Convert.ToBase64String(pdf), Guid.NewGuid()+ ".pdf");
+                user.PDF = await _Blob.CreateFile(Convert.ToBase64String(pdf), Guid.NewGuid() + ".pdf");
                 await _UserService.UpdateUser(user);
             }
         }
@@ -94,7 +92,6 @@ namespace BuyMyHouse.Services
         public async Task DeleteMortgage(string queueString)
         {
             var queues = JsonSerializer.Deserialize<List<string>>(queueString);
-
             foreach (var fileId in queues)
             {
                 await _Blob.DeleteBlob(fileId);
