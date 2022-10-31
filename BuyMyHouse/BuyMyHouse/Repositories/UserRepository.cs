@@ -1,4 +1,5 @@
-﻿using BuyMyHouse.Model;
+﻿using BuyMyHouse.DataAccess;
+using BuyMyHouse.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,43 +10,41 @@ namespace BuyMyHouse.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private UserContext _UserContext;
+        private IBuyMyHouseDbContext _buyMyHouseDbContext { get; }
 
-        public UserRepository(UserContext userContext)
+        public UserRepository(IBuyMyHouseDbContext buyMyHouseDbContext)
         {
-            _UserContext = userContext;
+            _buyMyHouseDbContext = buyMyHouseDbContext;
+        }
+        public async Task<int> AddUser(User user)
+        {
+            _buyMyHouseDbContext.Users.Add(user);
+            var result = await _buyMyHouseDbContext.SaveChangesAsync();
+            return result;
         }
 
         public async Task<IEnumerable<User>> GetUsers()
         {
-            var users = _UserContext.Users.ToList();
+            var users = _buyMyHouseDbContext.Users.ToList();
             return users;
         }
 
-        public async Task<User> GetUserById(string user)
+        public async Task<User> GetUserById(Guid Id)
         {
-            return _UserContext.Users.Find(user);
-        }
-
-        public async Task<User> AddUser(User user)
-        {
-            _UserContext.Add<User>(user);
-            await _UserContext.SaveChangesAsync();
-
-            return user;
+            return _buyMyHouseDbContext.Users.Find(Id);
         }
 
         public async Task<User> UpdateUser(User user)
         {
-            _UserContext.Update(user);
-            await _UserContext.SaveChangesAsync();
+            _buyMyHouseDbContext.Users.Update(user);
+            await _buyMyHouseDbContext.SaveChangesAsync();
             return user;
         }
 
         public async Task UpdateUsers(IEnumerable<User> users)
         {
-            _UserContext.UpdateRange(users);
-            await _UserContext.SaveChangesAsync();
+            _buyMyHouseDbContext.Users.UpdateRange(users);
+            await _buyMyHouseDbContext.SaveChangesAsync();
         }
 
     }

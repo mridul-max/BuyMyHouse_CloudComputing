@@ -1,9 +1,5 @@
 ﻿using BuyMyHouse.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BuyMyHouse.Repositories;
 
 namespace BuyMyHouse.Services
 {
@@ -21,14 +17,14 @@ namespace BuyMyHouse.Services
             return await _UserRepository.GetUsers();
         }
 
-        public async Task<User> GetUserById(string userid)
+        public async Task<User> GetUserById(Guid userid)
         {
             return await _UserRepository.GetUserById(userid);
         }
 
         public async Task AddUser(User user)
         {
-            user.id = Guid.NewGuid().ToString();
+            user.Id = Guid.NewGuid();
             var createUser = await _UserRepository.AddUser(user);
         }
 

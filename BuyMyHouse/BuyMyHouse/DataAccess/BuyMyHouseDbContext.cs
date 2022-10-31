@@ -25,26 +25,6 @@ namespace BuyMyHouse.DataAccess
                 .HasPartitionKey(h => h.ZipCode).HasKey(h => h.Id);
 
         }
-
-       /* public void MarkAsModifiedCareGiver(CareGiver careGiver)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MarkAsModifiedDrinkRecord(DrinkRecord drinkRecord)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MarkAsModifiedPatient(Patient patient)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SaveChangesAsync()
-        {
-            throw new NotImplementedException();
-        }*/
-
+        public Task<int> SaveChangesAsync() => base.SaveChangesAsync();
     }
 }

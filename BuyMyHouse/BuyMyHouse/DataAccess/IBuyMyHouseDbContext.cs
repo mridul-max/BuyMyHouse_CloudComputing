@@ -9,8 +9,8 @@ namespace BuyMyHouse.DataAccess
         public DbSet<Mortgage> Mortgages { get; set; }
         public DbSet<House> Houses { get; set; }
         Task<int> SaveChangesAsync();
-        public void MarkAsModifiedPatient(Patient patient);
+/*        public void MarkAsModifiedPatient(Patient patient);
         public void MarkAsModifiedCareGiver(CareGiver careGiver);
-        public void MarkAsModifiedDrinkRecord(DrinkRecord drinkRecord);
+        public void MarkAsModifiedDrinkRecord(DrinkRecord drinkRecord);*/
     }
 }

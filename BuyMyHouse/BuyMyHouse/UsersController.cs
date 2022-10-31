@@ -1,14 +1,18 @@
-﻿using Microsoft.Azure.Functions.Worker;
+﻿using BuyMyHouse.Model;
+using BuyMyHouse.Services;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Net;
 
-namespace CloudDatabases
+namespace BuyMyHouse
 {
-    public class FunctionUsers
+    public class UsersController
     {
         private readonly IUserService _UserService;
         private ILogger _logger { get; }
-        public FunctionUsers(IUserService userService, ILogger logger)
+        public UsersController(IUserService userService, ILogger logger)
         {
             _UserService = userService;
             _logger = logger;   
@@ -19,13 +23,11 @@ namespace CloudDatabases
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequestData req, 
             FunctionContext executionContext)
         {
-            log.
+            _logger.LogInformation("Started saving a Buyes");
             var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var user = JsonConvert.DeserializeObject<User>(requestBody);
             await _UserService.AddUser(user);
-
             var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
             return response;
         }
     }
