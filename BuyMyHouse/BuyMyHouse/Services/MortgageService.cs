@@ -15,16 +15,14 @@ namespace BuyMyHouse.Services
         private readonly string _ServiceBusConnectString;
         private readonly string _CreateQueueName;
         private readonly string _SendQueueName;
-
         public MortgageService(IUserService userService, IBlob blob)
         {
             _UserService = userService;
             _Blob = blob;
             _ServiceBusConnectString = Environment.GetEnvironmentVariable("AzureConnectionString");
-            _CreateQueueName = Environment.GetEnvironmentVariable("ServiceBusNameCreate");
+            _CreateQueueName = Environment.GetEnvironmentVariable("ServiceBusName");
             _SendQueueName = Environment.GetEnvironmentVariable("ServiceBusNameSend");
         }
-
         public async Task AddMortgage(string queue)
         {
             var queues = JsonSerializer.Deserialize<List<string>>(queue);
@@ -59,7 +57,6 @@ namespace BuyMyHouse.Services
                 }
             }
         }
-
         public async Task SendEmailWithMortgages(string queueString)
         {
             var queues = JsonSerializer.Deserialize<List<string>>(queueString);

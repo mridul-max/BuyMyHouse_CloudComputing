@@ -10,9 +10,7 @@ namespace BuyMyHouse.Repositories
             var connectionstring = Environment.GetEnvironmentVariable("BlobStorage");
             var storageAccount = CloudStorageAccount.Parse(connectionstring);
             var serviceClient = storageAccount.CreateCloudBlobClient();
-            var container = serviceClient.GetContainerReference(
-                    $"{Environment.GetEnvironmentVariable("FileContainer")}"
-            );
+            var container = serviceClient.GetContainerReference($"{Environment.GetEnvironmentVariable("FileContainer")}");
             await container.CreateIfNotExistsAsync();
             return container;
         }
